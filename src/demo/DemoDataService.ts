@@ -31,12 +31,10 @@ export const DemoDataService = {
   },
   
   initializeDataIfMissing: () => {
-    // Always re-seed employees and tasks if missing
-    if (!localStorage.getItem('kdm_demo_accountability_employees')) {
-      save('employees', initialDemoEmployees);
-      save('tasks', initialDemoTasks);
-      save('reviews', initialDemoReviews);
-    }
+    // ALWAYS force-seed all data so any cloned machine gets full demo data
+    save('employees', initialDemoEmployees);
+    save('tasks', initialDemoTasks);
+    save('reviews', initialDemoReviews);
     // ALWAYS regenerate worklogs with fresh NOW-based timestamps so timers tick on every machine
     save('worklogs', [
       { id: 'dwl-1', taskId: 'dt-1', employeeId: 'emp-s1', startedAt: new Date(Date.now() - (2 * 3600000 + 47 * 60000)).toISOString(), endedAt: null, durationSeconds: 0 },
