@@ -21,18 +21,27 @@ export const DemoDataService = {
   resetDemoData: () => {
     save('employees', initialDemoEmployees);
     save('tasks', initialDemoTasks);
-    save('worklogs', initialDemoWorkLogs);
+    // Generate fresh timestamps so timers are always live
+    save('worklogs', [
+      { id: 'dwl-1', taskId: 'dt-1', employeeId: 'emp-s1', startedAt: new Date(Date.now() - (2 * 3600000 + 47 * 60000)).toISOString(), endedAt: null, durationSeconds: 0 },
+      { id: 'dwl-5', taskId: 'dt-5', employeeId: 'emp-o2', startedAt: new Date(Date.now() - (1 * 3600000 + 32 * 60000)).toISOString(), endedAt: null, durationSeconds: 0 },
+    ]);
     save('reviews', initialDemoReviews);
     window.location.reload();
   },
   
   initializeDataIfMissing: () => {
+    // Always re-seed employees and tasks if missing
     if (!localStorage.getItem('kdm_demo_accountability_employees')) {
       save('employees', initialDemoEmployees);
       save('tasks', initialDemoTasks);
-      save('worklogs', initialDemoWorkLogs);
       save('reviews', initialDemoReviews);
     }
+    // ALWAYS regenerate worklogs with fresh NOW-based timestamps so timers tick on every machine
+    save('worklogs', [
+      { id: 'dwl-1', taskId: 'dt-1', employeeId: 'emp-s1', startedAt: new Date(Date.now() - (2 * 3600000 + 47 * 60000)).toISOString(), endedAt: null, durationSeconds: 0 },
+      { id: 'dwl-5', taskId: 'dt-5', employeeId: 'emp-o2', startedAt: new Date(Date.now() - (1 * 3600000 + 32 * 60000)).toISOString(), endedAt: null, durationSeconds: 0 },
+    ]);
   },
 
   getEmployees: async (): Promise<DemoEmployee[]> => load('employees', initialDemoEmployees),
